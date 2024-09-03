@@ -1,0 +1,112 @@
+<%-include('layouts/header.ejs')%>
+<h2 class="mb-4">Groups</h2>
+
+<div class="container">
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createGroupModel">
+        Create Group
+</button>
+
+<% if (typeof message !== 'undefined') { %>
+    <p style="color: green;"><%= message %></p>
+<% } %>
+
+<table class="table mt-4">
+    <thead>
+        <tr>
+            <th>S.No</th>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Limit</th>
+            <th>Members</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+       <% if (typeof group !== 'undefined' && group.length > 0) { %>
+            <% for (let i = 0; i < group.length; i++) { %>
+                <tr>
+                    <td><%= i + 1 %></td>
+                    <td>
+                        <img src="http://127.0.0.1:9000/<%= group[i].image %>" width="100px" height="100px">
+                    </td>
+                    <td>
+                        <%= group[i].name %>
+                    </td>
+                    <td>
+                        <%= group[i].limit %>
+                    </td>
+                    <td>
+                        <a class="cursor-pointer addMember" data-id="<%= group[i]._id %>" data-limit="<%= group[i].limit %>" data-toggle="modal" data-target="#memberModal">Members</a>
+                    </td>
+                </tr>
+            <% } %>
+       <% } else { %>
+            <tr>
+                <td colspan="6">No Groups Found</td>
+            </tr>
+       <% } %>
+    </tbody>
+</table>
+
+<!-- Member Modal -->
+<div class="modal fade" id="memberModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Members</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="add-member-form">
+                <div class="modal-body">
+                    <input type="hidden" name="group_id" id="group_id">
+                    <input type="hidden" name="limit" id="limit">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Select</th>
+                                <th>Name</th>
+                            </tr>
+                        </thead>
+                        <tbody class="addMemberTable">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-danger">Update Member</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Create Group Modal -->
+<div class="modal fade" id="createGroupModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Create Group</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="" enctype="multipart/form-data" method="post">
+                <div class="modal-body">
+                    <input type="text" name="name" placeholder="Enter Group Name" required class="w-100 mb-2">
+                    <input type="file" name="image" required class="w-100 mb-2">
+                    <input type="number" name="limit" placeholder="Enter Group Limit" required class="w-100 mb-2">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</div>
+<%-include('layouts/footer.ejs')%>
